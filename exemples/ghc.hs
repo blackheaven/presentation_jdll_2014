@@ -48,7 +48,18 @@ data Es = Es Int deriving (Show) -- ElementStore
 -- :t Es 42
 
 ----------------
+data Es = Es Int deriving (Show) -- ElementStore
+get :: Es -> Int -- on veut récupérer sa valeur
+get (Es x) = x
+-- :r
+-- get (Es 42)
+-- get (Es 2)
+-- :t Es 42
+
+----------------
 data Es = El Int | Null deriving (Show) -- peut être nul
+-- get :: Es -> Int -- on veut récupérer sa valeur
+-- get (Es x) = x
 -- :r
 -- El 42
 -- Null
@@ -62,7 +73,19 @@ data Es = El Int | Null deriving (Show) -- peut être nul
 -- plus de segfault ou de NPE !
 
 ----------------
+data Es = El Int | Null deriving (Show) -- peut être nul
+get :: Int -> Es -> Int -- on ajoute une valeur par défault
+get x Null = x -- toujours commencer par le cas le moins général
+get _ (El x) = x
+-- :r
+-- get 1 Null
+-- get 1 (El 2)
+
+----------------
 data Es = El Int Es | Null deriving (Show) -- on a une liste !
+-- get :: Int -> Es -> Int -- on ajoute une valeur par défault
+-- get x Null = x -- toujours commencer par le cas le moins général
+-- get _ (El x) = x
 -- :r
 -- El 42 Null
 -- El 42 (El 2 Null)
@@ -76,7 +99,41 @@ data Es = El Int Es | Null deriving (Show) -- on a une liste !
 -- []
 -- ou
 -- [42, 2]
---
--- TODO : somme, produit, refacto foldr
--- on veut const2 1 2 = 2
--- myLast' = foldr1 (const id)
+
+-----------------
+head' :: [Int] -> Int
+head' -- quoi ?
+head' [x] = x -- bug pour head [1, 2]
+head' (x:_) = x
+-- :r
+-- head' [1]
+-- head' [1, 2]
+-- head' []
+
+------------------
+sum' :: [Int] -> Int
+sum' s = sum'' s 0
+    where sum'' [] acc = acc
+          sum'' (x:xs) acc = sum'' xs (acc + x)
+
+prod' :: [Int] -> Int
+prod' s = prod'' s 0
+    where prod'' [] acc = acc
+          prod'' (x:xs) acc = prod'' xs (acc * x)
+
+-------------------
+fold' _ acc [] = acc -- :t
+fold' op acc (x:xs) = fold' op (op acc x) xs
+
+sum' :: [Int] -> Int
+sum' s = fold' (+) 0 s
+
+prod' :: [Int] -> Int
+prod' s = fold' (*) 1 s
+
+-------------------
+fold' _ acc [] = acc
+fold' op acc (x:xs) = fold' op (op acc x) xs
+
+const2 _ x = x
+last' s = fold' const2 0 s
