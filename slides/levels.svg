@@ -19,7 +19,7 @@
     <text x="325" y="150" fill="white">10^-5 - Moi</text>
 
     <line x1="160" y1="190" x2="315" y2="190" stroke="white" />
-    <text x="325" y="200" fill="white">10^-5 - Vous (dans une heure)</text>
+    <text x="325" y="200" fill="white">10^-7 - Vous (dans 45 minutes)</text>
 
     <line x1="160" y1="355" x2="315" y2="355" stroke="white" />
     <text x="325" y="365" fill="white">0 - Reste du monde</text>
